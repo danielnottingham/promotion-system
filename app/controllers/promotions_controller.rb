@@ -1,10 +1,11 @@
 class PromotionsController < ApplicationController
+  before_action :set_promotion, only: %i[show edit update generate_coupons]
+
   def index
     @promotions = Promotion.all
   end
 
   def show
-    @promotion = Promotion.find(params[:id])
   end
 
   def new
@@ -21,8 +22,6 @@ class PromotionsController < ApplicationController
   end
 
   def generate_coupons
-    @promotion = Promotion.find(params[:id])
-
     (1..@promotion.coupon_quantity).each do |number|
       Coupon.create!(code: "#{@promotion.code}-#{'%04d' % number}", promotion: @promotion)
     end
@@ -31,7 +30,22 @@ class PromotionsController < ApplicationController
     redirect_to @promotion
   end
 
+  def edit
+  end
+
+  def update
+    if @promotion.update(promotion_params)
+      redirect_to @promotion
+    else
+      render :edit
+    end
+  end
+
   private
+
+  def set_promotion
+    @promotion = Promotion.find(params[:id])
+  end
 
   def promotion_params
     params

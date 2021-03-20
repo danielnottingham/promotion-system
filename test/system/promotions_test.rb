@@ -87,7 +87,7 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Desconto', with: '15'
     fill_in 'Quantidade de cupons', with: '90'
     fill_in 'Data de término', with: '22/12/2033'
-    click_on 'Criar promoção'
+    click_on 'Salvar promoção'
 
     # assert_current_path promotion_path(Promotion.last)
     assert_text 'Cyber Monday'
@@ -103,7 +103,7 @@ class PromotionsTest < ApplicationSystemTestCase
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar uma promoção'
-    click_on 'Criar promoção'
+    click_on 'Salvar promoção'
 
     assert_text 'não pode ficar em branco', count: 5
   end
@@ -118,7 +118,7 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Registrar uma promoção'
     fill_in 'Nome', with: 'Natal'
     fill_in 'Código', with: 'NATAL10'
-    click_on 'Criar promoção'
+    click_on 'Salvar promoção'
 
     assert_text 'deve ser único', count: 2
   end
@@ -140,5 +140,47 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'NATAL10-0002'
     assert_text 'NATAL10-0100'
     assert_no_text 'NATAL10-0101'
+  end
+
+  test 'edit attributes' do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+
+    visit promotion_path(promotion)
+    click_on 'Editar'
+    fill_in 'Nome', with: 'Black Friday'
+    fill_in 'Descrição', with: 'Promoção da Black Friday'
+    fill_in 'Código', with: 'BLACK30'
+    fill_in 'Desconto', with: 30
+    fill_in 'Quantidade de cupons', with: 50
+    fill_in 'Data de término', with: '30/11/2033'
+    click_on 'Salvar promoção'
+
+    assert_text 'Black Friday'
+    assert_text 'Promoção da Black Friday'
+    assert_text '30,00%'
+    assert_text 'BLACK30'
+    assert_text '30/11/2033'
+    assert_text '20'
+    assert_link 'Voltar'
+  end
+
+  test 'edit attributes cannot be blank' do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+
+    visit promotion_path(promotion)
+    click_on 'Editar'
+    fill_in 'Nome', with: ''
+    fill_in 'Descrição', with: ''
+    fill_in 'Código', with: ''
+    fill_in 'Desconto', with: ''
+    fill_in 'Quantidade de cupons', with: ''
+    fill_in 'Data de término', with: ''
+    click_on 'Salvar promoção'
+
+    assert_text 'não pode ficar em branco', count: 5
   end
 end
