@@ -1,3 +1,12 @@
+<% if @product_category.errors.any? %>
+  <h4>Não foi possível salvar encontramos alguns errors:</h4>
+  <ul>
+    <% @product_category.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
+
 <%= form_with model: @product_category, local: true do |f| %>
   <div>
     <%= f.label :name, 'Nome' %>
