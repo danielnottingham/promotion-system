@@ -195,6 +195,7 @@ class PromotionsTest < ApplicationSystemTestCase
     end
 
     assert_select 'td', count: 0
+    assert Promotion.count, 0
     assert_current_path promotions_path
   end
 end
