@@ -1,5 +1,5 @@
 class PromotionsController < ApplicationController
-  before_action :set_promotion, only: %i[show edit update generate_coupons]
+  before_action :set_promotion, only: %i[show edit update generate_coupons destroy]
 
   def index
     @promotions = Promotion.all
@@ -39,6 +39,11 @@ class PromotionsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @promotion.destroy
+    redirect_to action: 'index'
   end
 
   private

@@ -1,17 +1,28 @@
-<%= link_to 'Voltar', root_path %>
-
-<%= link_to 'Registrar uma promoção', new_promotion_path %>
-
 <% if @promotions.empty? %>
   <h3>Nenhuma promoção cadastrada</h3>
 <% end %>
+<h1>Lista de Promoções</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th>Desc. em porcentagem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @promotions.each do |promotion| %>
+      <tr>
+        <td><%= link_to promotion.name, promotion %></td>
+        <td><%= promotion.description %></td>
+        <td><%= number_to_percentage promotion.discount_rate, separator: ',', precision: 2 %></td>
+        <td><%= link_to 'Deletar', promotion, method: :delete, data: { confirm: 'Você tem certeza?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br><br>
+<%= link_to 'Voltar', root_path %> |
 
-<% @promotions.each do |promotion| %>
-  <h3><%= link_to promotion.name, promotion %></h3>
-  <dl>
-    <dt>Descrição</dt>
-    <dd><%= promotion.description %></dd>
-    <dt>Desconto <small>em porcentagem</small></dt>
-    <dd><%= number_to_percentage promotion.discount_rate, separator: ',', precision: 2 %></dd>
-  </dl>
-<% end %> 
+<%= link_to 'Registrar uma promoção', new_promotion_path %>
+
