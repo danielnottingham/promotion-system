@@ -183,4 +183,18 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_text 'não pode ficar em branco', count: 5
   end
+
+  test 'should destroy promotion' do
+    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+
+    visit promotions_path
+    accept_confirm 'Você tem certeza?' do
+      click_on 'Deletar', match: :first
+    end
+
+    assert_select 'td', count: 0
+    assert_current_path promotions_path
+  end
 end

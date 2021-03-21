@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'home#index'
 
-  resources :promotions, only: %i[index show new create update edit] do
+  resources :promotions do
     post 'generate_coupons', on: :member
   end
 end
