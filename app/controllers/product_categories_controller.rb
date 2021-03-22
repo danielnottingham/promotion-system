@@ -1,5 +1,5 @@
 class ProductCategoriesController < ApplicationController
-    before_action :set_product_category, only: %i[show]
+    before_action :set_product_category, only: %i[show edit update]
 
   def index 
     @product_categories = ProductCategory.all
@@ -18,6 +18,17 @@ class ProductCategoriesController < ApplicationController
       redirect_to @product_category
     else
       render :new
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @product_category.update(product_category_params)
+      redirect_to @product_category
+    else
+      render :edit
     end
   end
 

@@ -1,20 +1,5 @@
-<% if @product_category.errors.any? %>
-  <h4>Não foi possível salvar encontramos alguns errors:</h4>
-  <ul>
-    <% @product_category.errors.full_messages.each do |message| %>
-    <li><%= message %></li>
-    <% end %>
-  </ul>
-<% end %>
+<h1>Cadastrar Categoria</h1>
 
-<%= form_with model: @product_category, local: true do |f| %>
-  <div>
-    <%= f.label :name, 'Nome' %>
-    <%= f.text_field :name %>
-  </div>
-  <div>
-    <%= f.label :code, 'Código' %>
-    <%= f.text_field :code %>
-  </div>
-  <%= f.submit 'Salvar Categoria' %>
-<% end %>
+<%= render 'form', product_category: @product_category %>
+
+<%= link_to 'Voltar', product_categories_path %>

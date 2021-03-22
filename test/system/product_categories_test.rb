@@ -45,4 +45,30 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     assert_text 'AntiFraude'
     assert_text 'ANTIFRA'
   end
+
+  test 'expect success in edit product category' do
+    product_category = ProductCategory.create!(name: 'AntiFraude', code: 'ANTIFRA')
+
+    visit product_category_path(product_category)
+    click_on 'Editar'
+    fill_in 'Nome', with: 'NovoTeste'
+    fill_in 'Código', with: 'NOVOTEST'
+    click_on 'Salvar Categoria'
+
+    assert_text 'NovoTeste'
+    assert_text 'NOVOTEST'
+    assert_link 'Voltar'
+  end
+
+  test 'expect fail in edit product category' do
+    product_category = ProductCategory.create!(name: 'AntiFraude', code: 'ANTIFRA')
+
+    visit product_category_path(product_category)
+    click_on 'Editar'
+    fill_in 'Nome', with: ''
+    fill_in 'Código', with: ''
+    click_on 'Salvar Categoria'
+
+    assert_text 'não pode ficar em branco', count: 2
+  end
 end
