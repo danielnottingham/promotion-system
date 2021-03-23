@@ -22,12 +22,8 @@ class PromotionsController < ApplicationController
   end
 
   def generate_coupons
-    (1..@promotion.coupon_quantity).each do |number|
-      Coupon.create!(code: "#{@promotion.code}-#{'%04d' % number}", promotion: @promotion)
-    end
-
-    flash[:notice] = 'Cupons gerados com sucesso'
-    redirect_to @promotion
+    @promotion.generate_coupons!
+    redirect_to @promotion, notice: 'Cupons gerados com sucesso'
   end
 
   def edit
