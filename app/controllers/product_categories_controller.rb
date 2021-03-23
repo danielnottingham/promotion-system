@@ -1,5 +1,5 @@
 class ProductCategoriesController < ApplicationController
-    before_action :set_product_category, only: %i[show edit update]
+    before_action :set_product_category, only: %i[show edit update destroy]
 
   def index 
     @product_categories = ProductCategory.all
@@ -30,6 +30,11 @@ class ProductCategoriesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @product_category.destroy
+    redirect_to action: 'index'
   end
 
   private

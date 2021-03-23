@@ -71,4 +71,17 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
     assert_text 'não pode ficar em branco', count: 2
   end
+
+  test 'destroy a product category' do
+    ProductCategory.create!(name: 'AntiFraude', code: 'ANTIFRA')
+
+    visit product_categories_path
+    accept_confirm 'Você tem certeza?' do
+      click_on 'Deletar', match: :first
+    end
+
+    assert_select 'td', count: 0
+    assert ProductCategory.count, 0
+    assert_current_path product_categories_path
+  end
 end
