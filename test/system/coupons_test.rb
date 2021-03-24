@@ -34,14 +34,14 @@ class CouponsTest < ApplicationSystemTestCase
     visit promotion_path(promotion)
 
     within 'div#coupon-natal10-0001' do
-      click_on 'Desabilitar'
+      click_on 'Desabilitar', count: promotion.coupon_quantity - 1
     end
 
     assert_text 'Cupom NATAL10-0001 desabilitado com sucesso'
     assert_text 'NATAL10-0001 (desabilitado)'
     
     within 'div#coupon-natal10-0001' do
-      click_on 'Reativar'
+      click_on 'Reativar', count: promotion.coupon_quantity + 1
     end
 
     assert_text 'Cupom NATAL10-0001 reativado com sucesso'
