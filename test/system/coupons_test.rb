@@ -7,6 +7,7 @@ class CouponsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10,
                                   coupon_quantity: 3,
                                   expiration_date: '22/12/2033')
+    login_user
     promotion.generate_coupons!
 
     visit promotion_path(promotion)
@@ -28,7 +29,8 @@ class CouponsTest < ApplicationSystemTestCase
       code: 'NATAL10', discount_rate: 10,
       coupon_quantity: 3,
       expiration_date: '22/12/2033')
-
+    
+    login_user
     promotion.generate_coupons!
 
     visit promotion_path(promotion)

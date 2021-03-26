@@ -41,7 +41,11 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
                                   description: 'Promoção de natal',
                                   code: 'NATAL10', discount_rate: 15,
                                   coupon_quantity: 5, expiration_date: '22/12/2033')
-    patch promotion_path(promotion)
+    patch promotion_path(promotion), params: { 
+          promotion: { name: 'Pascoa', description: 'Promoção de pascoa',
+          code: 'PASCOA10', discount_rate: 15, coupon_quantity: 5, 
+          expiration_date: '22/12/2033' }
+        }
     assert_redirected_to new_user_session_path
   end
 
