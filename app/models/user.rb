@@ -9,6 +9,6 @@ class User < ApplicationRecord
 
   def email_domain
     domain = email.split('@').last
-    errors.add(:email) if email.present? && domain != IUGU_DOMAIN
+    errors.add(:email, 'Domínio do email deve ser "@iugu.com.br"') if email.present? && domain != IUGU_DOMAIN
   end
 end
