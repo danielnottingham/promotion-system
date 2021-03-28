@@ -262,4 +262,53 @@ class PromotionsTest < ApplicationSystemTestCase
     visit new_promotion_path
     assert_current_path new_user_session_path
   end
+
+  test 'can search promotion by exactly name' do
+    promotion = Promotion.create!(name: 'Natal',
+                              description: 'Promoção de Natal',
+                              code: 'NATAL10', discount_rate: 10, 
+                              coupon_quantity: 100,
+                              expiration_date: '22/12/2033')
+    login_user
+    visit promotions_path
+
+    fill_in 'Pesquisa', with: 'Natal'
+    click_on 'Buscar'
+
+    assert_text 'Natal'
+    assert_text 'Promoção de Natal'
+    assert_text '10,00%'
+  end
+
+  test 'can search promotion by a part of the name' do
+    promotion = Promotion.create!(name: 'Natal',
+                              description: 'Promoção de Natal',
+                              code: 'NATAL10', discount_rate: 10, 
+                              coupon_quantity: 100,
+                              expiration_date: '22/12/2033')
+    login_user
+    visit promotions_path
+
+    fill_in 'Pesquisa', with: 'al'
+    click_on 'Buscar'
+
+    assert_text 'Natal'
+    assert_text 'Promoção de Natal'
+    assert_text '10,00%'
+  end
+
+  test 'did not find a registered promotion' do
+    promotion = Promotion.create!(name: 'Natal',
+                              description: 'Promoção de Natal',
+                              code: 'NATAL10', discount_rate: 10, 
+                              coupon_quantity: 100,
+                              expiration_date: '22/12/2033')
+    login_user
+    visit promotions_path
+
+    fill_in 'Pesquisa', with: 'ge'
+    click_on 'Buscar'
+
+    assert_text 'Nenhuma promoção cadastrada'
+  end
 end

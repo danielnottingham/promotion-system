@@ -7,6 +7,8 @@ class Promotion < ApplicationRecord
 
   validates :code, :name, uniqueness: true
 
+  scope :search_by_name, ->(query) { where('name like ?', "%#{query}%") }
+
   def generate_coupons!
     return if coupons?
 

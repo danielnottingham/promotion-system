@@ -3,7 +3,11 @@ class PromotionsController < ApplicationController
   before_action :set_promotion, only: %i[show edit update generate_coupons destroy]
 
   def index
-    @promotions = Promotion.all
+    @promotions = if params[:search_by_name]
+      Promotion.search_by_name(params[:search_by_name])
+    else
+      Promotion.all
+    end
   end
 
   def show
