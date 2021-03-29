@@ -1,0 +1,14 @@
+
+body {
+  padding-top: 56px;
+  background-color: #f5f7fb !important;
+}
+
+.container {
+  padding: 20px;
+  background: white;
+  border: 1px solid rgba(0,0,0, 0.1);
+  border-radius: 2px;
+  box-shadow: 0px 0px 6px #888;
+  margin: 20px auto 20px auto;
+}

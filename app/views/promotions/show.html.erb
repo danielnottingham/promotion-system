@@ -15,17 +15,15 @@
   <dd><%= @promotion.coupon_quantity %></dd>
 </dl>
 
-<%= link_to 'Editar', edit_promotion_path %> |
-
+<%= link_to 'Editar', edit_promotion_path %> 
+<br><br>
 <% if @promotion.coupons.empty? %>
   <%= link_to t('.generate_coupons'), generate_coupons_promotion_path(@promotion), method: :post %>
 <% end %>
 
 <% @promotion.coupons.each do |coupon| %>
   <div id="coupon-<%= coupon.code.parameterize %>">
-    <p>
       <%= coupon.code %> (<%= Coupon.human_attribute_name("status.#{coupon.status}") %>)
-    </p>
     <% if coupon.active? %>
       <%= link_to 'Desabilitar', disable_coupon_path(coupon), method: :post, data: { disable_with: 'Estamos desabilitando....' } %>
     <% else %>
