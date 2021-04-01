@@ -1,6 +1,6 @@
 class PromotionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_promotion, only: %i[show edit update generate_coupons destroy]
+  before_action :set_promotion, only: %i[show edit update generate_coupons destroy approve]
 
   def index
     @promotions = if params[:search_by_name]
@@ -18,7 +18,7 @@ class PromotionsController < ApplicationController
   end
 
   def create
-    @promotion = Promotion.new(promotion_params)
+    @promotion = current_user.promotions.new(promotion_params)
     if @promotion.save
       redirect_to @promotion
     else
@@ -45,6 +45,11 @@ class PromotionsController < ApplicationController
   def destroy
     @promotion.destroy
     redirect_to action: 'index'
+  end
+
+  def approve
+    PromotionApproval.create!(promotion: @promotion, user: current_user)
+    redirect_to @promotion, notice: 'Promoção aprovada com sucesso'
   end
 
   private

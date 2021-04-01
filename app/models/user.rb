@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :promotions
+
   validate :email_domain
   IUGU_DOMAIN = 'iugu.com.br'
 

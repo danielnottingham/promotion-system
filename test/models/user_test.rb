@@ -11,5 +11,6 @@ class UserTest < ActiveSupport::TestCase
     user = User.create(email: 'daniel@gmail.com.br', password: 'password')
 
     refute user.valid?
+    assert user.errors.full_messages, 'Domínio do email deve ser "@iugu.com.br"'
   end
 end

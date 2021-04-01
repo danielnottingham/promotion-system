@@ -1,5 +1,7 @@
 class Promotion < ApplicationRecord
+  belongs_to :user
   has_many :coupons, dependent: :destroy
+  has_one :promotion_approval
 
   validates :name, :code, :discount_rate,
             :coupon_quantity, :expiration_date,
@@ -20,5 +22,9 @@ class Promotion < ApplicationRecord
   # TODO: fazer testes pra esse método
   def coupons?
     coupons.any?
+  end
+
+  def approved?
+    promotion_approval.present?
   end
 end
