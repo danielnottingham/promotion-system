@@ -16,9 +16,10 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'code must be uniq' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123456')
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
     promotion = Promotion.new(code: 'NATAL10')
 
     refute promotion.valid?
@@ -26,9 +27,10 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'name must be uniq' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123456')
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
     promotion = Promotion.new(name: 'Natal')
 
     refute promotion.valid?
@@ -36,22 +38,24 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'generate_coupons! succesfully' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123456')
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10,
                                   coupon_quantity: 100,
-                                  expiration_date: '22/12/2033')
+                                  expiration_date: '22/12/2033', user: user)
     promotion.generate_coupons!
     assert_equal promotion.coupons.size, promotion.coupon_quantity
     assert_equal promotion.coupons.first.code, 'NATAL10-0001'
   end
 
   test 'generate_coupons! cannot be called twice' do
+    user = User.create!(email: 'test@iugu.com.br', password: '123456')
     promotion = Promotion.create!(name: 'Natal',
                                   description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10,
                                   coupon_quantity: 100,
-                                  expiration_date: '22/12/2033')
+                                  expiration_date: '22/12/2033', user: user)
     Coupon.create!(code: 'BLABLABLA', promotion: promotion)
     assert_no_difference 'Coupon.count' do
       promotion.generate_coupons!
