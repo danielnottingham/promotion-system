@@ -138,6 +138,7 @@ class PromotionsTest < ApplicationSystemTestCase
                                   code: 'NATAL10', discount_rate: 10,
                                   coupon_quantity: 100,
                                   expiration_date: '22/12/2033', user: user)
+    promotion.create_promotion_approval(user: User.create!(email: 'marcos@iugu.com.br', password: '123456'))
 
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
@@ -212,28 +213,6 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_current_path promotions_path
   end
 
-  test 'should destroy promotion and coupons' do
-    user = login_user
-    promotion = Promotion.create!(name: 'Natal',
-                                  description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10,
-                                  coupon_quantity: 100,
-                                  expiration_date: '22/12/2033', user: user)
-
-    visit promotion_path(promotion)
-    click_on 'Gerar cupons'
-    click_on 'Voltar'
-
-    accept_confirm 'Você tem certeza?' do
-      click_on 'Deletar', match: :first
-    end
-
-    assert_select 'td', count: 0
-    assert Promotion.count, 0
-    refute Coupon.exists?(promotion_id: promotion.id)
-    assert_current_path promotions_path
-  end
-
   test 'do not view promotion link without login' do
     visit root_path
 
@@ -261,6 +240,20 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text "Aprovada por: #{approver.email}"
     assert_text 'Gerar cupons'
     refute_link 'Aprovar'
+  end
+
+  test 'user cannot approves his promotion' do
+    user = login_user
+    promotion = Promotion.create!(name: 'Natal',
+                                  description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, 
+                                  coupon_quantity: 100,
+                                  expiration_date: '22/12/2033', user: user)
+
+    visit promotion_path(promotion)
+
+    refute_link 'Aprovar'
+    refute_link 'Gerar cupons'
   end
 
   test 'do view promotion details without login' do
